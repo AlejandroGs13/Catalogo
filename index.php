@@ -55,18 +55,19 @@
 
   		<div id="contac" class="container">
   			<?php
-  			$arr = array();
+  			$arr = array(); //declaramos una arry donde guardaremos los datos
 			$conectar = mysqli_connect("localhost","Cain","ghahfah16");
 			mysqli_select_db($conectar,"Catalogo");
-			$consulta="Select * From Peliculas;";
-			$resultado=mysqli_query($conectar,$consulta);
-			$registros=mysqli_num_rows($resultado);
-			for ($i=0; $i < $registros ; $i++) {
-				$row = mysqli_fetch_assoc($resultado); 
-				//$elemento=mysql_result($resultado, $i,"nombre");
-				$elemento = $row['ID'];
+			$consulta="Select * From Peliculas;";   //consulta a la base de datos
+			$resultado=mysqli_query($conectar,$consulta); //Ejecutas la cunsulta de datos y guardas los resutados
+			$registros=mysqli_num_rows($resultado); // vemos el numero de filas que tiene el resultado
+			for ($i=0; $i < $registros ; $i++) {//for recorriendo todas las filas
+				$row = mysqli_fetch_assoc($resultado); // guardamos la primer fila en la variable row, con el ciclo tambien va cambiando de fila
 				
-				array_push($arr,$elemento);
+				$elemento = $row['ID'];//declaramos una variable elemento y la igualamos a una columna de la fila 
+				//$['nombre de la columna']
+				array_push($arr,$elemento);//con este metodo metemos el elemento al arry
+				//repetimos los pasos con las columnas que tengas
 				$elemento = $row['titulo'];
 				
 				array_push($arr,$elemento);
@@ -110,18 +111,18 @@
 				
   			?>
 
-			
+			<!--Con codigo javascript ontendremos la variable de php con los datos de la tabla-->
 		  	<script type="text/javascript">
-		  		var arrayJS=<?php echo json_encode($arr);?>;	
-			    var div='';
-			    div+="<div class='datagrid '><table class='order-table table'><tbody>";
-		        for (var i=1;i<arrayJS.length;i+=12){ 
+		  		var arrayJS=<?php echo json_encode($arr);?>;	//esta es la linea donde igualamos un arry de javascript con el de php 
+			    var div='';//usaremos esta variable para generar codigo 
+			    div+="<div class='datagrid '><table class='order-table table'><tbody>";//a generar en html
+		        for (var i=1;i<arrayJS.length;i+=12){ //ciclo del tamaño del arry
 			           var cont=i+1;
 			           div+="<tr><td ><div class='col s12 m'><div class='card horizontal grey'><div class='card-image'><img src='"+arrayJS[i+10]+"'></div><div class='card-stacked'><div class='card-content #424242 grey darken-3 white-text'><p><h1>\t"+arrayJS[i]+"</h1></p><p><h7>Genero:"+arrayJS[i+2]+".--Duracion:\t"+arrayJS[i+3]+"</h7></p><p><h5>Año:"+arrayJS[i+1]+"</h5></p><p><h5>Idioma:"+arrayJS[i+4]+"</h5><p><h5>Pais:"+arrayJS[i+5]+"</h5></p></p><p><h5>Direccion:"+arrayJS[i+6]+"</h5></p><p><h5>Guion:"+arrayJS[i+7]+"</h5></p><p><h5>Efectos Especiales:"+arrayJS[i+8]+"</h5></p><p><h5>Reparto:"+arrayJS[i+9]+"</h5></p></div><div class='card-action'><div class='col s4 '><a class='waves-effect waves-light btn red' href=#modificar"+i+"><i class='material-icons left'>replay</i>Modificar</a></div><br><div class='col s4 '><a class='waves-effect waves-light btn red' href='#eliminar"+i+"'><i class='material-icons left'>delete_forever</i>Eliminar</a></div></div></div></div></div></td></tr><div id='eliminar"+i+"' class='modal'><div class='modal-content'><center><h4>Eliminar pelicula</h4><p>Seguro que quiere eliminar la pelicula:"+arrayJS[i]+"</p></center></div><div class='modal-footer'><a href='PHP/eliminar.php?id="+arrayJS[i-1]+"'' class='modal-action modal-close waves-effect waves-green btn-flat'>Aceptar</a></div></div>";
-
+				   //con este codigo se genera una cardview con cada elemento de la base de datos
 			      }
 			      div+="</tbody></table></div>";
-			      document.getElementById("contac").innerHTML=div;
+			      document.getElementById("contac").innerHTML=div;//insertamos el codigo en el html 
 			     
 			</script>
 			
